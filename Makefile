@@ -6,5 +6,5 @@ stop:
 	docker compose down
 clean:
 	docker compose down --volumes
-bash
+bash:
 	docker compose exec -it app bash

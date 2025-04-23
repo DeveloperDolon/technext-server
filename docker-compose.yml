@@ -1,8 +1,8 @@
 version: '3.8'
 
 services:
-  tn_client:
-    container_name: tn_client
+  tn_server:
+    container_name: tn_server
     build:
       context: .
       target: development
