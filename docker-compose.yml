@@ -12,12 +12,13 @@ services:
       - .:/usr/src/app
       - /usr/src/app/node_modules
     depends_on:
-      - postgres
+      postgres:
+        condition: service_healthy
     restart: unless-stopped
     environment:
       - NODE_ENV=development
       - REACT_APP_API_URL=http://localhost:3000/api
-      - DATABASE_URL=postgres://postgres:${DB_PASSWORD}@postgres:5432/freelancer_crm
+      - DATABASE_URL=postgres://postgres:admin@postgres:5432/freelancer_crm
     healthcheck:
       test: ["CMD", "curl", "-f", "http://localhost:3000/health"]
       interval: 30s
@@ -31,29 +32,35 @@ services:
     image: postgres:15-alpine
     environment:
       - POSTGRES_USER=postgres
-      - POSTGRES_PASSWORD=${DB_PASSWORD}
+      - POSTGRES_PASSWORD=admin
+      - POSTGRES_EMAIL=admin@example.com
       - POSTGRES_DB=freelancer_crm
+      - LANG=en_US.utf8
+      - LC_ALL=en_US.utf8
     ports:
       - '5432:5432'
     volumes:
       - postgres_data:/var/lib/postgresql/data
-      - ./postgres/init.sql:/docker-entrypoint-initdb.d/init.sql
+      # Remove or fix this line if you're not using init.sql
+      # - ./postgres/init.sql:/docker-entrypoint-initdb.d/init.sql
     healthcheck:
-      test: ["CMD-SHELL", "pg_isready -U postgres"]
+      test: ["CMD-SHELL", "pg_isready -U postgres -d freelancer_crm"]
       interval: 5s
       timeout: 5s
-      retries: 5
+      retries: 10
+      start_period: 5s
 
   pgadmin:
     container_name: tn_pgadmin
     image: dpage/pgadmin4
     environment:
-      - PGADMIN_DEFAULT_EMAIL=${PGADMIN_EMAIL}
-      - PGADMIN_DEFAULT_PASSWORD=${PGADMIN_PASSWORD}
+      - PGADMIN_DEFAULT_EMAIL=admin@example.com
+      - PGADMIN_DEFAULT_PASSWORD=admin
     ports:
       - '5050:80'
     depends_on:
-      - postgres
+      postgres:
+        condition: service_healthy
     volumes:
       - pgadmin_data:/var/lib/pgadmin
     healthcheck:
