@@ -7,4 +7,4 @@ stop:
 clean:
 	docker compose down --volumes
 bash:
-	docker compose exec -it app bash
+	docker compose exec -it tn_server sh
