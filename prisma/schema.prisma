@@ -7,11 +7,16 @@ datasource db {
   url      = env("DATABASE_URL")
 }
 
+enum ThemePref {
+  LIGHT
+  DARK
+}
+
 model User {
   id        String   @id @default(uuid())
   email     String   @unique
   password  String
-  themePref String?
+  themePref ThemePref @default(LIGHT)
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
 
@@ -31,7 +36,7 @@ model Client {
   phone     String?
   company   String?
   notes     String?
-  themePref String?
+  themePref ThemePref @default(LIGHT)
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
 
