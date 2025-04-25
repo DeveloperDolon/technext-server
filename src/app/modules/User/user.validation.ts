@@ -10,18 +10,6 @@ const createUserZodSchema = z.object({
   }),
 });
 
-const createClientZodSchema = z.object({
-  client: z.object({
-    userId: z.string(),
-    name: z.string().min(1).max(100),
-    email: z.string().email(),
-    phone: z.string().optional(),
-    company: z.string().optional(),
-    notes: z.string().optional(),
-    themePref: z.enum(['light', 'dark']).default('light'),
-  }),
-});
-
 const loginUserZodSchema = z.object({
   body: z.object({
     email: z.string().email(),
@@ -31,6 +19,5 @@ const loginUserZodSchema = z.object({
 
 export const UserValidation = {
   createUserZodSchema,
-  createClientZodSchema,
   loginUserZodSchema,
 };

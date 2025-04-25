@@ -28,10 +28,10 @@ model User {
 
 model Client {
   id        String    @id @default(uuid())
-  userId    String    @unique
+  userId    String 
   user      User      @relation(fields: [userId], references: [id])
   name      String
-  email     String    @unique
+  email     String 
   phone     String?
   company   String?
   notes     String?
