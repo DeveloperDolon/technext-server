@@ -1,10 +1,19 @@
-import catchAsync from "../../utils/catchAsync";
-
+import httpStatus from 'http-status';
+import catchAsync from '../../utils/catchAsync';
+import sendResponse from '../../utils/sendResponse';
+import { userService } from './user.service';
 
 const createUser = catchAsync(async (req, res) => {
-    const resule = 
+  const result = await userService.createUserIntoDB(req);
+
+  sendResponse(res, {
+    statusCode: httpStatus.OK,
+    success: true,
+    message: 'User created successfully',
+    data: result,
+  });
 });
 
 export const userController = {
-    createUser
+  createUser,
 };
