@@ -6,7 +6,7 @@ const createProjectZodSchema = z.object({
       title: z.string().min(1).max(100),
       budget: z.number().min(0),
       clientId: z.string(),
-      deadline: z.date(),
+      deadline: z.coerce.date(),
       status: z
         .enum(['PENDING', 'IN_PROGRESS', 'COMPLETED', 'CANCELLED'])
         .default('PENDING'),
