@@ -2,6 +2,9 @@ import { User } from '@prisma/client';
 import { Request } from 'express';
 import * as bcrypt from 'bcrypt';
 import prisma from '../../utils/prisma';
+import { jwtHelpers } from '../../helpers/jwtHelpers';
+import config from '../../config';
+import { Secret } from 'jsonwebtoken';
 
 const createUserIntoDB = async (req: Request): Promise<User> => {
   const hashedPassword: string = await bcrypt.hash(req.body.password, 12);
@@ -15,7 +18,7 @@ const createUserIntoDB = async (req: Request): Promise<User> => {
   return result;
 };
 
-const loginUserIntoDB = async (req: Request): Promise<User | null> => {
+const loginUserIntoDB = async (req: Request) => {
   const { email, password } = req.body;
 
   const user = await prisma.user.findUnique({
@@ -32,9 +35,28 @@ const loginUserIntoDB = async (req: Request): Promise<User | null> => {
     throw new Error('Invalid password');
   }
 
-  const accessToken = await jwt
+  const accessToken = jwtHelpers.generateToken(
+    {
+      email: user.email,
+      id: user.id,
+    },
+    config.jwt.secret as Secret,
+    config.jwt.expires_in as string
+  );
 
-  return user;
+  const refreshToken = jwtHelpers.generateToken(
+    {
+      email: user.email,
+      id: user.id,
+    },
+    config.jwt.refresh_secret as Secret,
+    config.jwt.refresh_expires_in as string
+  );
+
+  return {
+    accessToken,
+    refreshToken,
+  };
 };
 
 export const userService = {
