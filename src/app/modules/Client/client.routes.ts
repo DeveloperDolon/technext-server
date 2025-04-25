@@ -22,4 +22,10 @@ router.put(
 
 router.delete('/delete/:id', auth(), ClientController.deleteClient);
 
+router.get(
+  '/list',
+  auth(),
+  ClientController.clientList
+);
+
 export const clientRoutes = router;

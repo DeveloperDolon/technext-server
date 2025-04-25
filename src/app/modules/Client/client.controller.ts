@@ -35,8 +35,19 @@ const deleteClient = catchAsync(async (req, res) => {
   });
 });
 
+const clientList = catchAsync(async (req, res) => {
+  const result = await ClientService.clientListFromDB(req);
+  sendResponse(res, {
+    statusCode: httpStatus.OK,
+    success: true,
+    message: 'Client list fetched successfully',
+    data: result,
+  });
+});
+
 export const ClientController = {
   createClient,
   updateClient,
   deleteClient,
+  clientList,
 };
