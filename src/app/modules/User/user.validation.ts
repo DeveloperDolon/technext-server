@@ -1,10 +1,12 @@
 import { z } from 'zod';
 
 const createUserZodSchema = z.object({
-  password: z.string().min(6).max(20),
-  user: z.object({
-    email: z.string().email(),
-    themePref: z.enum(['light', 'dark']).default('light'),
+  body: z.object({
+    password: z.string().min(6).max(20),
+    user: z.object({
+      email: z.string().email(),
+      themePref: z.enum(['light', 'dark']).default('light'),
+    }),
   }),
 });
 
@@ -22,5 +24,5 @@ const createClientZodSchema = z.object({
 
 export const UserValidation = {
   createUserZodSchema,
-  createClientZodSchema
+  createClientZodSchema,
 };

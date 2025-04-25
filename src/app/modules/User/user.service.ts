@@ -11,7 +11,7 @@ const createUserIntoDB = async (req: Request): Promise<User> => {
     password: hashedPassword,
   };
 
-  const result = await prisma.user.create(user);
+  const result = await prisma.user.create({data: user});
   return result;
 };
 
