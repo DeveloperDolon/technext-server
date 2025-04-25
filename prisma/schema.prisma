@@ -9,17 +9,19 @@ datasource db {
 
 model User {
   id        String   @id @default(uuid())
-  email     String  @unique
+  email     String   @unique
   password  String
   themePref String?
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
-  clients Client?
+
+  clients  Client?
+  projects Project[]
 }
 
 model Client {
   id        String   @id @default(uuid())
-  userId    String  @unique
+  userId    String   @unique
   user      User     @relation(fields: [userId], references: [id])
   name      String
   email     String   @unique
@@ -30,5 +32,27 @@ model Client {
   themePref String?
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
+
+  projects Project[]
 }
 
+enum Status {
+  PENDING
+  IN_PROGRESS
+  COMPLETED
+  CANCELLED
+}
+
+model Project {
+  id        String   @id @default(uuid())
+  userId    String
+  user      User     @relation(fields: [userId], references: [id])
+  clientId  String
+  client    Client   @relation(fields: [clientId], references: [id])
+  title     String
+  budget    Int
+  deadline  DateTime
+  status    Status   @default(PENDING)
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+}
