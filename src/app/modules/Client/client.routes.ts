@@ -22,10 +22,8 @@ router.put(
 
 router.delete('/delete/:id', auth(), ClientController.deleteClient);
 
-router.get(
-  '/list',
-  auth(),
-  ClientController.clientList
-);
+router.get('/list', auth(), ClientController.clientList);
+
+router.get('/show/:id', auth(), ClientController.clientShow);
 
 export const clientRoutes = router;

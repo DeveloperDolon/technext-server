@@ -60,9 +60,24 @@ const clientListFromDB = async (
   return clients;
 };
 
+const clientShowById = async (
+  req: Request & { user?: TUser }
+): Promise<Client> => {
+  const { id } = req.params;
+  const client = await prisma.client.findUnique({
+    where: { id: id, userId: req.user?.id },
+    include: { projects: true },
+  });
+  if (!client) {
+    throw new Error('Client not found');
+  }
+  return client;
+};
+
 export const ClientService = {
   clientCreateIntoDB,
   updateClientIntoDB,
   deleteClientIntoDB,
   clientListFromDB,
+  clientShowById,
 };
