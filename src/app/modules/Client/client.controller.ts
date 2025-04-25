@@ -14,6 +14,18 @@ const createClient = catchAsync(async (req, res) => {
   });
 });
 
+const updateClient = catchAsync(async (req, res) => {
+  const result = await ClientService.updateClientIntoDB(req);
+
+  sendResponse(res, {
+    statusCode: httpStatus.OK,
+    success: true,
+    message: 'Client updated successfully',
+    data: result,
+  });
+});
+
 export const ClientController = {
   createClient,
+  updateClient,
 };

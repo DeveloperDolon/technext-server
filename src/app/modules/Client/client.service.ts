@@ -16,6 +16,27 @@ const clientCreateIntoDB = async (
   return result;
 };
 
+const updateClientIntoDB = async (
+  req: Request & { user?: TUser }
+): Promise<Client> => {
+  const { id } = req.params;
+  const client = {
+    ...req.body.client,
+  };
+
+  const result = await prisma.client.update({
+    where: { id: id, userId: req.user?.id },
+    data: client,
+  });
+
+  if (!result) {
+    throw new Error('Client not found');
+  }
+
+  return result;
+};
+
 export const ClientService = {
   clientCreateIntoDB,
+  updateClientIntoDB,
 };

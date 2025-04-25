@@ -13,4 +13,11 @@ router.post(
   ClientController.createClient
 );
 
+router.put(
+  '/update/:id',
+  auth(),
+  validateRequest(ClientValidation.updateClientZodSchema),
+  ClientController.updateClient
+);
+
 export const clientRoutes = router;

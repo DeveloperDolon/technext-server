@@ -13,6 +13,13 @@ const createClientZodSchema = z.object({
   }),
 });
 
+const updateClientZodSchema = z.object({
+  body: z.object({
+    client: createClientZodSchema.shape.body.shape.client.partial(),
+  }),
+});
+
 export const ClientValidation = {
   createClientZodSchema,
+  updateClientZodSchema,
 };
