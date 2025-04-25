@@ -15,9 +15,10 @@ model User {
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
 
-  clients  Client?
-  projects Project[]
+  clients      Client?
+  projects     Project[]
   interactions Interaction[]
+  reminders    Reminder[]
 }
 
 model Client {
@@ -34,8 +35,9 @@ model Client {
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
 
-  projects Project[]
+  projects     Project[]
   interactions Interaction[]
+  reminders    Reminder[]
 }
 
 enum Status {
@@ -59,6 +61,7 @@ model Project {
   updatedAt DateTime @updatedAt
 
   interactions Interaction[]
+  reminders    Reminder[]
 }
 
 enum InteractionType {
@@ -68,15 +71,31 @@ enum InteractionType {
 }
 
 model Interaction {
-  id        String   @id @default(uuid())
-  userId    String 
-  user      User     @relation(fields: [userId], references: [id])
+  id        String          @id @default(uuid())
+  userId    String
+  user      User            @relation(fields: [userId], references: [id])
   clientId  String
-  client    Client   @relation(fields: [clientId], references: [id])
+  client    Client          @relation(fields: [clientId], references: [id])
   projectId String
-  project   Project  @relation(fields: [projectId], references: [id])
-  type      InteractionType  @default(EMAIL)
+  project   Project         @relation(fields: [projectId], references: [id])
+  type      InteractionType @default(EMAIL)
   notes     String?
-  createdAt DateTime @default(now())
-  updatedAt DateTime @updatedAt
+  createdAt DateTime        @default(now())
+  updatedAt DateTime        @updatedAt
+}
+
+model Reminder {
+  id          String   @id @default(uuid())
+  userId      String
+  user        User     @relation(fields: [userId], references: [id])
+  clientId    String
+  client      Client   @relation(fields: [clientId], references: [id])
+  projectId   String
+  project     Project  @relation(fields: [projectId], references: [id])
+  title       String
+  dueDate     DateTime
+  notes       String
+  isCompleted Boolean  @default(false)
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @updatedAt
 }
