@@ -36,7 +36,23 @@ const updateClientIntoDB = async (
   return result;
 };
 
+const deleteClientIntoDB = async (
+  req: Request & { user?: TUser }
+): Promise<Client> => {
+
+  const { id } = req.params;
+  const result = await prisma.client.delete({
+    where: { id: id, userId: req.user?.id },
+  });
+  
+  if (!result) {
+    throw new Error('Client not found');
+  }
+  return result;
+};
+
 export const ClientService = {
   clientCreateIntoDB,
   updateClientIntoDB,
+  deleteClientIntoDB,
 };

@@ -20,4 +20,6 @@ router.put(
   ClientController.updateClient
 );
 
+router.delete('/delete/:id', auth(), ClientController.deleteClient);
+
 export const clientRoutes = router;
