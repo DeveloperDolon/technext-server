@@ -11,10 +11,33 @@ const createUserIntoDB = async (req: Request): Promise<User> => {
     password: hashedPassword,
   };
 
-  const result = await prisma.user.create({data: user});
+  const result = await prisma.user.create({ data: user });
   return result;
+};
+
+const loginUserIntoDB = async (req: Request): Promise<User | null> => {
+  const { email, password } = req.body;
+
+  const user = await prisma.user.findUnique({
+    where: { email },
+  });
+
+  if (!user) {
+    throw new Error('User not found');
+  }
+
+  const isPasswordValid = await bcrypt.compare(password, user.password);
+
+  if (!isPasswordValid) {
+    throw new Error('Invalid password');
+  }
+
+  const accessToken = await jwt
+
+  return user;
 };
 
 export const userService = {
   createUserIntoDB,
+  loginUserIntoDB,
 };
