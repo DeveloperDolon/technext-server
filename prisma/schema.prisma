@@ -14,6 +14,7 @@ enum ThemePref {
 
 model User {
   id        String    @id @default(uuid())
+  name      String
   email     String    @unique
   password  String
   themePref ThemePref @default(LIGHT)
@@ -28,10 +29,10 @@ model User {
 
 model Client {
   id        String    @id @default(uuid())
-  userId    String 
+  userId    String
   user      User      @relation(fields: [userId], references: [id])
   name      String
-  email     String 
+  email     String
   phone     String?
   company   String?
   notes     String?
