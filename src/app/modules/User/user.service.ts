@@ -5,6 +5,7 @@ import prisma from '../../utils/prisma';
 import { jwtHelpers } from '../../helpers/jwtHelpers';
 import config from '../../config';
 import { Secret } from 'jsonwebtoken';
+import { TUser } from '../../types';
 
 const createUserIntoDB = async (req: Request): Promise<User> => {
   const hashedPassword: string = await bcrypt.hash(req.body.password, 12);
@@ -59,7 +60,19 @@ const loginUserIntoDB = async (req: Request) => {
   };
 };
 
+const meService = async (req: Request & { user?: TUser }): Promise<User> => {
+  const user = await prisma.user.findUnique({
+    where: { id: req?.user?.id },
+  });
+
+  if (!user) {
+    throw new Error('User not found');
+  }
+  return user;
+};
+
 export const userService = {
   createUserIntoDB,
   loginUserIntoDB,
+  meService,
 };

@@ -5,6 +5,7 @@ const createUserZodSchema = z.object({
     password: z.string().min(6).max(20),
     user: z.object({
       email: z.string().email(),
+      name: z.string().min(3),
       themePref: z.enum(['light', 'dark']).default('light'),
     }),
   }),
