@@ -4,6 +4,7 @@ import { clientRoutes } from '../modules/Client/client.routes';
 import { projectRoutes } from '../modules/Projects/project.routes';
 import { interactionRoutes } from '../modules/Interaction/interaction.routes';
 import { reminderRoutes } from '../modules/Reminder/reminder.routes';
+import { dashboardRoutes } from '../modules/Dashboard/dashboard.routes';
 
 const router = express.Router();
 
@@ -27,6 +28,10 @@ const moduleRoutes = [
   {
     path: '/reminder',
     route: reminderRoutes,
+  },
+  {
+    path: '/dashboard',
+    route: dashboardRoutes,
   },
 ];
 
