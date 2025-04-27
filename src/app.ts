@@ -8,12 +8,19 @@ import cookieParser from 'cookie-parser';
 
 const app: Application = express();
 
-app.use(cors());
 app.use(cookieParser());
 
 //parser
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
+
+app.use(
+  cors({
+    origin: ['http://0.0.0.0:5712', 'http://localhost:5712'],
+    methods: ['GET', 'POST', 'PUT', 'DELETE'],
+    allowedHeaders: ['Content-Type', 'Authorization'],
+  })
+);
 
 app.use('/api/v1', routes);
 
